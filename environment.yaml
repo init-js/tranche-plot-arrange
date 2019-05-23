@@ -1,0 +1,19 @@
+#
+# conda env create -f environment.yaml -n rplots
+#
+#  (you might need to install build-essential tools to
+#   successfully create the environment. (e.g. gcc,make,python-dev) )
+
+
+channels:
+  - conda-forge
+  - bioconda
+  - r
+  - defaults
+dependencies:
+  - python=3.6.4
+  - r=3.4.1
+  - r-ape=5.1
+  - r-phangorn=2.3.1
+  - r-optparse
+  - r-ggrepel
