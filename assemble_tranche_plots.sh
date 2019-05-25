@@ -35,7 +35,7 @@ for x in "${sets[@]}"; do
     cp {"$suppdir","$plotdir"}/plot_Tranches.R
 
     ln -sfT snp.tranches "$plotdir"/"$x.tranches"
-    ( cd "$plotdir" RScript plot_Tranches.R 2.15; )
+    ( cd "$plotdir" && Rscript plot_Tranches.R "$x.tranches" 2.15; echo $?; )
     
 done
 
