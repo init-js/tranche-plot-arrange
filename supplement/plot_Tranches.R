@@ -84,7 +84,7 @@ if (extra["XTITLE"] != "") {
 #abline(v= d[1,3], lty=2)
 if ( ! suppressLegend ) {
     # 3, length(data2$targetTruthSensitivity)/3 +1
-    legend("topright", c('Cumulative TPs','Tranch-specific TPs', 'Tranch-specific FPs', 'Cumulative FPs' ), fill=cols, density=density, bg='white', cex=1.25)
+    legend("topright", c('Cumulative TPs','Tranche-specific TPs', 'Tranche-specific FPs', 'Cumulative FPs' ), fill=cols, density=density, bg='white', cex=1.25)
 }
 
 mtext("Ti/Tv",2,line=2.25,at=length(data2$targetTruthSensitivity)*1.2,las=1, cex=1)
