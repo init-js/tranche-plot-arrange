@@ -52,8 +52,13 @@ data2 = data2[order(data2$novelTiTv, decreasing=F),]
 #data2 = data2[order(data2$FDRtranche, decreasing=T),]
 cols = c("cornflowerblue", "cornflowerblue", "darkorange", "darkorange")
 density=c(20, -1, -1, 20)
-outfile = paste(tranchesFile, ".variants.pdf", sep="")
-pdf(outfile, height=5, width=8)
+
+outfile = paste(tranchesFile, ".variants", sep="")
+png(paste(outfile, ".png", sep=""), height=500, width=800)
+prevDev <- dev.cur()
+pdf(paste(outfile, ".pdf", sep=""), height=5, width=8)
+dev.control("enable")
+
 par(mar = c(5, 5, 4, 2) + 0.1)
 novelTiTv = c(data2$novelTITV,data2$novelTiTv)
 alpha = 1 - titvFPEstV(targetTITV, novelTiTv)
@@ -87,7 +92,10 @@ mtext("truth",2,line=0,at=length(data2$targetTruthSensitivity)*1.2,las=1, cex=1)
 axis(2,line=-1,at=0.7+(0:(length(data2$targetTruthSensitivity)-1))*1.2,tick=FALSE,labels=data2$targetTruthSensitivity, las=1, cex.axis=1.0)
 axis(2,line=1,at=0.7+(0:(length(data2$targetTruthSensitivity)-1))*1.2,tick=FALSE,labels=round(novelTiTv,3), las=1, cex.axis=1.0)
 
+dev.copy(which=prevDev)
 dev.off()
+dev.off()
+
 if (exists('compactPDF')) {
   compactPDF(outfile)
 }
@@ -96,9 +104,11 @@ if (exists('compactPDF')) {
 # plot sensitivity vs. specificity
 ##########
 
-outfile = paste(tranchesFile, ".sensitivity.pdf", sep="")
-pdf(outfile, height=5, width=8)
-
+outfile = paste(tranchesFile, ".sensitivity", sep="")
+png(paste(outfile, ".png", sep=""), width=600, height=600)
+prevDev <- dev.cur()
+pdf(paste(outfile, ".pdf", sep=""), height=5, width=8)
+dev.control("enable")
 
 sensitivity = data2$truthSensitivity
 if ( ! is.null(sensitivity) ) {
@@ -112,7 +122,8 @@ if ( ! is.null(sensitivity) ) {
     abline(v=targetSensitivity, lty=2)
     #text(max(sensitivity), targetTITV-0.05, labels="Expected novel Ti/Tv", pos=2)
 }
-
+dev.copy(which=prevDev)
+dev.off()
 dev.off()
 
 if (exists('compactPDF')) {
