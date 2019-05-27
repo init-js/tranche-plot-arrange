@@ -11,6 +11,10 @@ sets=(
     all_pet
 )
 
+declare -A xtitle=( ["all_ann1"]="H. annuus"
+		    ["all_arg1"]="H. argophyllus"
+		    ["all_pet"]="H. petiolaris"
+		  )
 
 function extract_plots () {
     local cohort="$1"
@@ -35,7 +39,7 @@ for x in "${sets[@]}"; do
     cp {"$suppdir","$plotdir"}/plot_Tranches.R
 
     ln -sfT snp.tranches "$plotdir"/"$x.tranches"
-    ( cd "$plotdir" && Rscript plot_Tranches.R "$x.tranches" 2.15; echo $?; )
+    ( cd "$plotdir" && XTITLE="${xtitle[$x]}" Rscript plot_Tranches.R "$x.tranches" 2.15; echo $?; )
     
 done
 

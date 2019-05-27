@@ -37,6 +37,13 @@ leftShift <- function(x, leftValue = 0) {
     r
 }
 
+extra = Sys.getenv(c("XLABEL", "XTITLE"), unset="", names=TRUE)
+if (extra["XLABEL"] != "") {
+   extra["XLABEL"] = paste(extra["XLABEL"], "- ")
+}
+
+#print(extra["XLABEL"],quote=FALSE)
+
 # -----------------------------------------------------------------------------------------------
 # Tranches plot
 # -----------------------------------------------------------------------------------------------
@@ -45,7 +52,7 @@ data2 = data2[order(data2$novelTiTv, decreasing=F),]
 #data2 = data2[order(data2$FDRtranche, decreasing=T),]
 cols = c("cornflowerblue", "cornflowerblue", "darkorange", "darkorange")
 density=c(20, -1, -1, 20)
-outfile = paste(tranchesFile, ".pdf", sep="")
+outfile = paste(tranchesFile, ".variants.pdf", sep="")
 pdf(outfile, height=5, width=8)
 par(mar = c(5, 5, 4, 2) + 0.1)
 novelTiTv = c(data2$novelTITV,data2$novelTiTv)
@@ -64,7 +71,10 @@ numNewBad = numBad - numPrevBad
 
 d=matrix(c(numPrevGood,numNewGood, numNewBad, numPrevBad),4,byrow=TRUE)
 #print(d)
-barplot(d/1000,horiz=TRUE,col=cols,space=0.2,xlab="Number of Novel Variants (1000s)", density=density, cex.axis=1.25, cex.lab=1.25) # , xlim=c(250000,350000))
+barplot(d/1000,horiz=TRUE,col=cols,space=0.2,xlab=paste(extra["XLABEL"], "Number of novel variants (1000s)"), density=density, cex.axis=1.25, cex.lab=1.25) # , xlim=c(250000,350000))
+if (extra["XTITLE"] != "") {
+   title(extra["XTITLE"])
+}
 #abline(v= d[2,dim(d)[2]], lty=2)
 #abline(v= d[1,3], lty=2)
 if ( ! suppressLegend ) {
@@ -77,12 +87,27 @@ mtext("truth",2,line=0,at=length(data2$targetTruthSensitivity)*1.2,las=1, cex=1)
 axis(2,line=-1,at=0.7+(0:(length(data2$targetTruthSensitivity)-1))*1.2,tick=FALSE,labels=data2$targetTruthSensitivity, las=1, cex.axis=1.0)
 axis(2,line=1,at=0.7+(0:(length(data2$targetTruthSensitivity)-1))*1.2,tick=FALSE,labels=round(novelTiTv,3), las=1, cex.axis=1.0)
 
+dev.off()
+if (exists('compactPDF')) {
+  compactPDF(outfile)
+}
+
+##########
 # plot sensitivity vs. specificity
+##########
+
+outfile = paste(tranchesFile, ".sensitivity.pdf", sep="")
+pdf(outfile, height=5, width=8)
+
+
 sensitivity = data2$truthSensitivity
 if ( ! is.null(sensitivity) ) {
     #specificity = titvFPEstV(targetTITV, novelTiTv)
     specificity = novelTiTv
-    plot(sensitivity, specificity, type="b", col="cornflowerblue", xlab="Tranche truth sensitivity", ylab="Specificity (Novel Ti/Tv ratio)")
+    plot(sensitivity, specificity, type="b", col="cornflowerblue", xlab=paste(extra["XLABEL"], "tranche truth sensitivity"), ylab="Specificity (Novel Ti/Tv ratio)")
+    if (extra["XTITLE"] != "") {
+        title(extra["XTITLE"])
+    }
     abline(h=targetTITV, lty=2)
     abline(v=targetSensitivity, lty=2)
     #text(max(sensitivity), targetTITV-0.05, labels="Expected novel Ti/Tv", pos=2)
