@@ -1,0 +1,8 @@
+This folder contains scripts to produce the tranche plots included in
+the manuscript.  The R script provided to draw the plots was extracted
+from GATK 4.0.1.2's jar file, and received only cosmetic changes
+(titles, legends, pdf/png output).
+
+The snp.tranches files provided in the subfolders were extracted from the
+output from VariantRecalibration. The repository also includes a snapshot
+of the generated png/pdf, as a convenience.
