@@ -1,3 +1,4 @@
 plot_*/*.pdf
 plot_*/*.png
 plot_*/plot_Tranches.R
+*~
